@@ -51,15 +51,11 @@ def save_output(image_name,pred,d_dir):
 
     imo.save(d_dir+imidx+'.png')
 
-def main():
+def main(image_dir,prediction_dir,batch_size,workers):
 
     # --------- 1. get image path and name ---------
     model_name='u2net'#u2netp
 
-
-
-    image_dir = os.path.join(os.getcwd(), 'test_data', 'test_images')
-    prediction_dir = os.path.join(os.getcwd(), 'test_data', model_name + '_results' + os.sep)
     model_dir = os.path.join(os.getcwd(), 'saved_models', model_name, model_name + '.pth')
 
     img_name_list = glob.glob(image_dir + os.sep + '*')
@@ -73,9 +69,9 @@ def main():
                                                                       ToTensorLab(flag=0)])
                                         )
     test_salobj_dataloader = DataLoader(test_salobj_dataset,
-                                        batch_size=1,
+                                        batch_size=int(batch_size),
                                         shuffle=False,
-                                        num_workers=1)
+                                        num_workers=int(workers))
 
     # --------- 3. model define ---------
     if(model_name=='u2net'):
@@ -119,4 +115,15 @@ def main():
         del d1,d2,d3,d4,d5,d6,d7
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description='U2Net')
+    parser.add_argument('--image_dir', metavar='path', required=True,
+                        help='the folder of your input frames')
+    parser.add_argument('--prediction_dir', metavar='path', required=True,
+                    help='the folder of result frames')
+    parser.add_argument('--batch_size', metavar='path', required=False,
+                  help='the batch size')
+    parser.add_argument('--workers', metavar='path', required=True,
+              help='the number of workers')
+    args = parser.parse_args()
+    main(image_dir=args.image_dir, prediction_dir=args.prediction_dir,batch_size=args.batch_size,workers=args.workers)
