@@ -68,9 +68,9 @@ def main(image_dir,prediction_dir,batch_size,workers):
                                                                       ToTensorLab(flag=0)])
                                         )
     test_salobj_dataloader = DataLoader(test_salobj_dataset,
-                                        batch_size=batch_size,
+                                        batch_size=int(batch_size),
                                         shuffle=False,
-                                        num_workers=workers)
+                                        num_workers=int(workers))
 
     # --------- 3. model define ---------
     if(model_name=='u2net'):
