@@ -91,7 +91,9 @@ def main(image_dir,prediction_dir,batch_size,workers):
     # --------- 4. inference for each image ---------
     import tqdm
     from tqdm import tqdm
+    from IPython.display import clear_output
     c=0
+    clear_output()
     for data_test in tqdm(test_salobj_dataloader):
 
         inputs_test = data_test['image']
