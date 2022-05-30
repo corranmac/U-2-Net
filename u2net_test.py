@@ -89,8 +89,9 @@ def main(image_dir,prediction_dir,batch_size,workers):
     net.eval()
 
     # --------- 4. inference for each image ---------
-    from alive_progress import alive_bar
-    with alive_bar(len(img_name_list), spinner="classic") as bar:
+    import tqdm
+    from tqdm import tqdm
+    with tqdm(len(img_name_list)):
         for i_test, data_test in enumerate(test_salobj_dataloader):
 
             print("inferencing:",img_name_list[i_test].split(os.sep)[-1])
