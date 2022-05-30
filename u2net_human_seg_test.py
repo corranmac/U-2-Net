@@ -92,8 +92,6 @@ def main(image_dir,prediction_dir,batch_size,workers):
     clear_output()
     for data_test in tqdm(test_salobj_dataloader):
 
-        print("inferencing:",img_name_list[i_test].split(os.sep)[-1])
-
         inputs_test = data_test['image']
         inputs_test = inputs_test.type(torch.FloatTensor)
 
