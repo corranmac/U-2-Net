@@ -91,29 +91,30 @@ def main(image_dir,prediction_dir,batch_size,workers):
     # --------- 4. inference for each image ---------
     import tqdm
     from tqdm import tqdm
-    with tqdm(len(img_name_list)):
-        for i_test, data_test in enumerate(test_salobj_dataloader):
+    c=0
+    for data_test in tqdm(test_salobj_dataloader):
 
-            inputs_test = data_test['image']
-            inputs_test = inputs_test.type(torch.FloatTensor)
+        inputs_test = data_test['image']
+        inputs_test = inputs_test.type(torch.FloatTensor)
 
-            if torch.cuda.is_available():
-                inputs_test = Variable(inputs_test.cuda())
-            else:
-                inputs_test = Variable(inputs_test)
+        if torch.cuda.is_available():
+            inputs_test = Variable(inputs_test.cuda())
+        else:
+            inputs_test = Variable(inputs_test)
 
-            d1,d2,d3,d4,d5,d6,d7= net(inputs_test)
+        d1,d2,d3,d4,d5,d6,d7= net(inputs_test)
 
-            # normalization
-            pred = d1[:,0,:,:]
-            pred = normPRED(pred)
+        # normalization
+        pred = d1[:,0,:,:]
+        pred = normPRED(pred)
 
-            # save results to test_results folder
-            if not os.path.exists(prediction_dir):
-                os.makedirs(prediction_dir, exist_ok=True)
-            save_output(img_name_list[i_test],pred,prediction_dir)
+        # save results to test_results folder
+        if not os.path.exists(prediction_dir):
+            os.makedirs(prediction_dir, exist_ok=True)
+        save_output(img_name_list[c],pred,prediction_dir)
+        c=c+1
 
-            del d1,d2,d3,d4,d5,d6,d7
+        del d1,d2,d3,d4,d5,d6,d7
 
 if __name__ == "__main__":
     import argparse
